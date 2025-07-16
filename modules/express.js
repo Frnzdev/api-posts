@@ -63,6 +63,22 @@ app.get("/posts/titulo/:titulo", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+//editar post
+app.patch("/posts/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await postModels.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!post) {
+      return res.status(404).json({ message: "Post não encontrado." });
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 // Listar todos os posts
 app.get("/posts", async (req, res) => {
